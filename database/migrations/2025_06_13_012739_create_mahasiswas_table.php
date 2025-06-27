@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('prodi_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('angkatan')->nullable();

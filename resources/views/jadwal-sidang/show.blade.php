@@ -16,50 +16,12 @@
                                 </a>
                             @endcan
 
-                            @php
-                                // Cek apakah user adalah dosen penguji untuk sidang ini
-                                $isPenguji = false;
-                                $pengujiData = null;
-                                $sudahDinilai = false;
 
-                                if (auth()->user()->hasRole('dosen')) {
-                                    $pengujiData = $jadwalSidang->pengujiSidangs
-                                        ->where('dosen.user_id', auth()->id())
-                                        ->first();
-                                    $isPenguji = $pengujiData !== null;
-
-                                    // Cek apakah sudah ada penilaian dari dosen ini
-                                    if ($isPenguji) {
-                                        $sudahDinilai = \App\Models\PenilaianSidang::where(
-                                            'jadwal_sidang_id',
-                                            $jadwalSidang->id,
-                                        )
-                                            ->where('penguji_sidang_id', $pengujiData->id)
-                                            ->exists();
-                                    }
-                                }
-                            @endphp
-
-                            @if ($isPenguji && !$sudahDinilai && $jadwalSidang->status === 'berlangsung')
-                                <a href="{{ route('penilaian-sidang.create', ['jadwal_sidang' => $jadwalSidang->id]) }}"
-                                    class="btn btn-primary btn-sm"
-                                    onclick="console.log('Klik Beri Penilaian - Status: {{ $jadwalSidang->status }}, ID: {{ $jadwalSidang->id }}')">
-                                    <i class="fas fa-plus"></i> Beri Penilaian
-                                </a>
-                            @elseif ($isPenguji && $sudahDinilai)
-                                <span class="btn btn-success btn-sm disabled">
-                                    <i class="fas fa-check"></i> Sudah Dinilai
-                                </span>
-                            @elseif ($isPenguji && $jadwalSidang->status !== 'berlangsung')
-                                <span class="btn btn-secondary btn-sm disabled"
-                                    title="Status saat ini: {{ $jadwalSidang->status }}">
-                                    <i class="fas fa-clock"></i> Menunggu Status Berlangsung
-                                </span>
-                            @elseif (!$isPenguji && auth()->user()->hasRole('dosen'))
-                                <span class="btn btn-secondary btn-sm disabled">
-                                    <i class="fas fa-user-times"></i> Bukan Penguji
-                                </span>
-                            @endif
+                            <a href="{{ route('penilaian-sidang.create', ['jadwal_sidang' => $jadwalSidang->id]) }}"
+                                class="btn btn-primary btn-sm"
+                                onclick="console.log('Klik Beri Penilaian - Status: {{ $jadwalSidang->status }}, ID: {{ $jadwalSidang->id }}')">
+                                <i class="fas fa-plus"></i> Beri Penilaian
+                            </a>
 
                             <a href="{{ route('jadwal-sidang.index') }}" class="btn btn-secondary btn-sm">
                                 <i class="fas fa-arrow-left"></i> Kembali

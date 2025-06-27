@@ -79,11 +79,10 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         ])->findOrFail($jadwalSidangId);
 
         // Cek apakah user adalah dosen penguji untuk sidang ini
-        $pengujiSidang = $jadwalSidang->pengujiSidangs()
-            ->whereHas('dosen', function ($q) {
-                $q->where('user_id', Auth::id());
-            })
-            ->first();
+        $pengujiSidang = $jadwalSidang->pengujiSidangs
+            ->firstWhere('dosen.user_id', Auth::id());
+
+            // dd($pengujiSidang);
 
         if (!$pengujiSidang) {
             return redirect()->route('jadwal-sidang.show', $jadwalSidang)

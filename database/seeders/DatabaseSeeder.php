@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class, // Tambahkan ini
             DosenSeeder::class,
             MahasiswaSeeder::class,
-            UserSeeder::class,
         ]);
     }
 }

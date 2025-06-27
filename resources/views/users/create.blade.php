@@ -41,17 +41,17 @@
 
             <div class="mb-3">
                 <label for="pangkat" class="form-label">Pangkat</label>
-                <input type="text" name="pangkat" class="form-control" required value="{{ old('pangkat') }}">
+                <input type="text" name="pangkat" class="form-control"  value="{{ old('pangkat') }}">
             </div>
 
             <div class="mb-3">
                 <label for="korps" class="form-label">Korps</label>
-                <input type="text" name="korps" class="form-control" required value="{{ old('korps') }}">
+                <input type="text" name="korps" class="form-control"  value="{{ old('korps') }}">
             </div>
 
             <div class="mb-3">
                 <label for="nrp" class="form-label">NRP</label>
-                <input type="text" name="nrp" class="form-control" required maxlength="8"
+                <input type="text" name="nrp" class="form-control"  maxlength="8"
                     value="{{ old('nrp') }}">
             </div>
 

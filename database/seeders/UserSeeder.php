@@ -18,10 +18,22 @@ class UserSeeder extends Seeder
         // Get roles and prodis
         $adminRole = Role::where('name', 'admin')->first();
         $kaprodiRole = Role::where('name', 'kaprodi')->first();
-        $dosenRole = Role::where('name', 'dosens')->first();
-        $mahasiswaRole = Role::where('name', 'mahasiswas')->first();
+        $dosenRole = Role::where('name', 'dosen')->first(); // PERBAIKAN: Ganti 'dosens' menjadi 'dosen'
+        $mahasiswaRole = Role::where('name', 'mahasiswa')->first(); // PERBAIKAN: Ganti 'mahasiswas' menjadi 'mahasiswa'
+
+        // PERBAIKAN: Tambahkan pengecekan role
+        if (!$adminRole || !$kaprodiRole || !$dosenRole || !$mahasiswaRole) {
+            $this->command->error('Roles not found! Make sure RolePermissionSeeder has been run first.');
+            return;
+        }
 
         $prodis = Prodi::all();
+
+        // PERBAIKAN: Tambahkan pengecekan prodi
+        if ($prodis->isEmpty()) {
+            $this->command->error('Prodis not found! Make sure ProdiSeeder has been run first.');
+            return;
+        }
 
         // Create Admin Users
         $this->createAdminUsers($adminRole, $kaprodiRole);
@@ -33,7 +45,7 @@ class UserSeeder extends Seeder
         $this->createMahasiswaUsers($mahasiswaRole, $prodis);
     }
 
-    private function createAdminUsers($adminRole, $koordinatorRole)
+    private function createAdminUsers($adminRole, $kaprodiRole) // PERBAIKAN: Ganti parameter name
     {
         // Super Admin
         $superAdmin = User::create([
@@ -48,15 +60,16 @@ class UserSeeder extends Seeder
         $superAdmin->assignRole($adminRole);
 
         // Koordinator
-        $kaprodiRole = User::create([
+        $koordinator = User::create([ // PERBAIKAN: Ganti variable name
             'name' => 'Dr. Koordinator Prodi',
             'pangkat' => 'Letnan Kolonel',
             'korps' => 'TNI AD',
             'nrp' => '22334455',
             'email' => 'koordinator@example.com',
             'password' => Hash::make('password'),
+            'status' => 'aktif', // PERBAIKAN: Tambahkan status
         ]);
-        $kaprodiRole->assignRole($kaprodiRole);
+        $koordinator->assignRole($kaprodiRole);
     }
 
     private function createDosenUsers($dosenRole, $prodis)
@@ -73,7 +86,7 @@ class UserSeeder extends Seeder
                 'bidang_studi' => 'Rekayasa Perangkat Lunak',
                 'phone' => '081234567890',
                 'alamat' => 'Jl. Merdeka No. 123, Jakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Dr. Budi Raharjo, S.Kom., M.Kom.',
@@ -86,7 +99,7 @@ class UserSeeder extends Seeder
                 'bidang_studi' => 'Sistem Informasi Manajemen',
                 'phone' => '081234567891',
                 'alamat' => 'Jl. Proklamasi No. 456, Jakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Mesin')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Mesin')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Prof. Dr. Candra Wijaya, S.T., M.T.',
@@ -99,7 +112,7 @@ class UserSeeder extends Seeder
                 'bidang_studi' => 'Arsitektur Komputer',
                 'phone' => '081234567892',
                 'alamat' => 'Jl. Diponegoro No. 789, Jakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()?->id,
             ],
             [
                 'name' => 'Drs. Dedi Kusuma, M.M.',
@@ -112,7 +125,7 @@ class UserSeeder extends Seeder
                 'bidang_studi' => 'Manajemen Sistem Informasi',
                 'phone' => '081234567893',
                 'alamat' => 'Jl. Sudirman No. 321, Jakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Manajemen Industri')->where('jenjang', 'S1')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Manajemen Industri')->where('jenjang', 'S1')->first()?->id,
             ],
             [
                 'name' => 'Ir. Eko Prasetyo, M.T.',
@@ -125,11 +138,17 @@ class UserSeeder extends Seeder
                 'bidang_studi' => 'Jaringan Komputer',
                 'phone' => '081234567894',
                 'alamat' => 'Jl. Thamrin No. 654, Jakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
         ];
 
         foreach ($dosenData as $data) {
+            // PERBAIKAN: Tambahkan pengecekan prodi_id
+            if (!$data['prodi_id']) {
+                $this->command->warn("Skipping dosen {$data['name']} - Prodi not found");
+                continue;
+            }
+
             $user = User::create([
                 'name' => $data['name'],
                 'pangkat' => $data['pangkat'],
@@ -137,6 +156,7 @@ class UserSeeder extends Seeder
                 'nrp' => $data['nrp'],
                 'email' => $data['email'],
                 'password' => Hash::make('password'),
+                'status' => 'aktif', // PERBAIKAN: Tambahkan status
             ]);
 
             $user->assignRole($dosenRole);
@@ -168,7 +188,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.75,
                 'phone' => '081987654321',
                 'alamat' => 'Jl. Pahlawan No. 111, Bandung',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Kopda Budi Santoso',
@@ -181,7 +201,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.50,
                 'phone' => '081987654322',
                 'alamat' => 'Jl. Veteran No. 222, Surabaya',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Sertu Citra Dewi',
@@ -194,7 +214,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.85,
                 'phone' => '081987654323',
                 'alamat' => 'Jl. Pemuda No. 333, Yogyakarta',
-                'prodi_id' => $prodis->where('name', 'Teknik Manajemen Industri')->where('jenjang', 'S1')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Manajemen Industri')->where('jenjang', 'S1')->first()?->id,
             ],
             [
                 'name' => 'Koptu Doni Hermawan',
@@ -207,7 +227,7 @@ class UserSeeder extends Seeder
                 'ipk' => null,
                 'phone' => '081987654324',
                 'alamat' => 'Jl. Kemerdekaan No. 444, Medan',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Serka Eka Putri',
@@ -220,7 +240,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.60,
                 'phone' => '081987654325',
                 'alamat' => 'Jl. Persatuan No. 555, Makassar',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Kopda Fajar Nugroho',
@@ -233,7 +253,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.25,
                 'phone' => '081987654326',
                 'alamat' => 'Jl. Bhayangkara No. 666, Semarang',
-                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Informatika')->where('jenjang', 'D3')->first()?->id,
             ],
             [
                 'name' => 'Serda Gita Sari',
@@ -246,7 +266,7 @@ class UserSeeder extends Seeder
                 'ipk' => 3.90,
                 'phone' => '081987654327',
                 'alamat' => 'Jl. Kartini No. 777, Denpasar',
-                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()?->id,
             ],
             [
                 'name' => 'Koptu Hendi Wijaya',
@@ -259,11 +279,17 @@ class UserSeeder extends Seeder
                 'ipk' => null,
                 'phone' => '081987654328',
                 'alamat' => 'Jl. Pancasila No. 888, Palembang',
-                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()->id,
+                'prodi_id' => $prodis->where('name', 'Teknik Elektro')->where('jenjang', 'S1')->first()?->id,
             ],
         ];
 
         foreach ($mahasiswaData as $data) {
+            // PERBAIKAN: Tambahkan pengecekan prodi_id
+            if (!$data['prodi_id']) {
+                $this->command->warn("Skipping mahasiswa {$data['name']} - Prodi not found");
+                continue;
+            }
+
             $user = User::create([
                 'name' => $data['name'],
                 'pangkat' => $data['pangkat'],
@@ -271,6 +297,7 @@ class UserSeeder extends Seeder
                 'nrp' => $data['nrp'],
                 'email' => $data['email'],
                 'password' => Hash::make('password'),
+                'status' => 'aktif', // PERBAIKAN: Tambahkan status jika required
             ]);
 
             $user->assignRole($mahasiswaRole);

@@ -23,16 +23,16 @@ class RolePermissionSeeder extends Seeder
             'delete users',
 
             // Mahasiswa Management
-            'view mahasiswa',
-            'create mahasiswa',
-            'edit mahasiswa',
-            'delete mahasiswa',
+            'view mahasiswas',
+            'create mahasiswas',
+            'edit mahasiswas',
+            'delete mahasiswas',
 
             // Dosen Management
-            'view dosen',
-            'create dosen',
-            'edit dosen',
-            'delete dosen',
+            'view dosens',
+            'create dosens',
+            'edit dosens',
+            'delete dosens',
 
             // Prodi Management
             'view prodi',

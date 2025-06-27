@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         // Get roles and prodis
         $adminRole = Role::where('name', 'admin')->first();
         $kaprodiRole = Role::where('name', 'kaprodi')->first();
-        $dosenRole = Role::where('name', 'dosen')->first();
-        $mahasiswaRole = Role::where('name', 'mahasiswa')->first();
+        $dosenRole = Role::where('name', 'dosens')->first();
+        $mahasiswaRole = Role::where('name', 'mahasiswas')->first();
 
         $prodis = Prodi::all();
 

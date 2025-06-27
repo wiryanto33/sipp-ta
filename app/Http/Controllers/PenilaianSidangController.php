@@ -100,11 +100,10 @@ class PenilaianSidangController extends Controller implements HasMiddleware
                 ->with('error', 'Anda sudah memberikan penilaian untuk sidang ini');
         }
 
-        // // Cek apakah sidang sudah selesai
-        // if ($jadwalSidang->status !== 'berlangsung') {
-        //     return redirect()->route('jadwal-sidang.show', $jadwalSidang)
-        //         ->with('error', 'Penilaian hanya dapat diberikan setelah sidang selesai');
-        // }
+        if ($jadwalSidang->status !== 'berlangsung') {
+            return redirect()->route('jadwal-sidang.show', $jadwalSidang->id)
+                ->with('error', 'Penilaian hanya dapat diberikan ketika sidang sedang berlangsung. Status saat ini: ' . $jadwalSidang->status);
+        }
 
         return view('penilaian_sidang.create', compact('jadwalSidang', 'pengujiSidang'));
     }

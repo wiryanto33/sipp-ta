@@ -21,6 +21,7 @@ class RolePermissionSeeder extends Seeder
             'create users',
             'edit users',
             'delete users',
+            'show users',
 
             // Mahasiswa Management
             'view mahasiswas',

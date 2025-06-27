@@ -42,16 +42,22 @@
 
                             @if ($isPenguji && !$sudahDinilai && $jadwalSidang->status === 'berlangsung')
                                 <a href="{{ route('penilaian-sidang.create', ['jadwal_sidang' => $jadwalSidang->id]) }}"
-                                    class="btn btn-primary btn-sm">
+                                    class="btn btn-primary btn-sm"
+                                    onclick="console.log('Klik Beri Penilaian - Status: {{ $jadwalSidang->status }}, ID: {{ $jadwalSidang->id }}')">
                                     <i class="fas fa-plus"></i> Beri Penilaian
                                 </a>
                             @elseif ($isPenguji && $sudahDinilai)
                                 <span class="btn btn-success btn-sm disabled">
                                     <i class="fas fa-check"></i> Sudah Dinilai
                                 </span>
-                            @elseif ($isPenguji && $jadwalSidang->status !== 'selesai')
+                            @elseif ($isPenguji && $jadwalSidang->status !== 'berlangsung')
+                                <span class="btn btn-secondary btn-sm disabled"
+                                    title="Status saat ini: {{ $jadwalSidang->status }}">
+                                    <i class="fas fa-clock"></i> Menunggu Status Berlangsung
+                                </span>
+                            @elseif (!$isPenguji && auth()->user()->hasRole('dosen'))
                                 <span class="btn btn-secondary btn-sm disabled">
-                                    <i class="fas fa-clock"></i> Sidang Belum mulai
+                                    <i class="fas fa-user-times"></i> Bukan Penguji
                                 </span>
                             @endif
 

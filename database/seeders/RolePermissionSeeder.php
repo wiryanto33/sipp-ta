@@ -89,5 +89,40 @@ class RolePermissionSeeder extends Seeder
         // Admin Role - Full Access
         $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo(Permission::all());
+        $dosenRole = Role::create(['name' => 'dosen']);
+        $dosenRole->givePermissionTo([
+            'view jadwal-sidang',
+            'show jadwal-sidang',
+            'create penilaian-sidang',
+            'edit penilaian-sidang',
+            'view penilaian-sidang',
+            'show penilaian-sidang',
+            'edit users',
+            'view users',
+            'show users',
+            'edit profile',
+            'view profile',
+            'edit update-kehadiran',
+            'edit update-status',
+        ]);
+        $mahasiswaRole = Role::create(['name' => 'mahasiswa']);
+        $mahasiswaRole->givePermissionTo([
+            'view tugas-akhir',
+            'create tugas-akhir',
+            'edit tugas-akhir',
+            'delete tugas-akhir',
+            'submit tugas-akhir',
+            'download tugas-akhir',
+            'view jadwal-sidang',
+            'show jadwal-sidang',
+            'edit jadwal-sidang',
+            'create jadwal-sidang',
+            'view penilaian-sidang',
+            'show penilaian-sidang',
+            'edit users',
+            'show users',
+            'edit profile',
+            'view profile',
+        ]);
     }
 }

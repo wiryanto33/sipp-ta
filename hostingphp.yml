@@ -6,11 +6,16 @@ database:
   password: tamtama33
   host: localhost
   port: 3306
-  auto_migrate: false
-  auto_seed: false
+  auto_migrate: true
   create_user: true
 commands:
+  - "composer install --no-dev --optimize-autoloader"
+  - "composer require spatie/laravel-permission"
+  - "php artisan vendor:publish --all"
+  - "php artisan migrate --force"
+  - "php artisan key:generate"
   - "php artisan config:cache"
   - "php artisan route:cache"
   - "php artisan view:cache"
   - "php artisan storage:link"
+  - "php artisan db:seed"

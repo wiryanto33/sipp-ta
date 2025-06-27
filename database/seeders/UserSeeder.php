@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         // Get roles and prodis
         $adminRole = Role::where('name', 'admin')->first();
         $kaprodiRole = Role::where('name', 'kaprodi')->first();
-        $dosenRole = Role::where('name', 'dosen')->first(); // PERBAIKAN: Ganti 'dosens' menjadi 'dosen'
-        $mahasiswaRole = Role::where('name', 'mahasiswa')->first(); // PERBAIKAN: Ganti 'mahasiswas' menjadi 'mahasiswa'
+        $dosenRole = Role::where('name', 'dosens')->first(); // PERBAIKAN: Ganti 'dosens' menjadi 'dosen'
+        $mahasiswaRole = Role::where('name', 'mahasiswas')->first(); // PERBAIKAN: Ganti 'mahasiswas' menjadi 'mahasiswa'
 
         // PERBAIKAN: Tambahkan pengecekan role
         if (!$adminRole || !$kaprodiRole || !$dosenRole || !$mahasiswaRole) {
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
         $superAdmin->assignRole($adminRole);
 
         // Koordinator
-        $koordinator = User::create([ // PERBAIKAN: Ganti variable name
+        $kaprodi = User::create([ // PERBAIKAN: Ganti variable name
             'name' => 'Dr. Koordinator Prodi',
             'pangkat' => 'Letnan Kolonel',
             'korps' => 'TNI AD',
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'status' => 'aktif', // PERBAIKAN: Tambahkan status
         ]);
-        $koordinator->assignRole($kaprodiRole);
+        $kaprodi->assignRole($kaprodiRole);
     }
 
     private function createDosenUsers($dosenRole, $prodis)

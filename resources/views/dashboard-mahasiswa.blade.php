@@ -93,15 +93,14 @@
                                         <h5 class="text-muted font-semibold">Pengajuan</h5>
                                         <h5 class="font-extrabold mb-0">
 
-                                            @if ($pengajuanTugasAkhir->status == 'diajukan')
+                                            @if ($pengajuanTugasAkhir && $pengajuanTugasAkhir->status == 'diajukan')
                                                 <span class="badge bg-warning">Diajukan</span>
-                                            @elseif ($pengajuanTugasAkhir->status == 'diterima')
+                                            @elseif ($pengajuanTugasAkhir && $pengajuanTugasAkhir->status == 'diterima')
                                                 <span class="badge bg-success">Diterima</span>
-                                            @elseif ($pengajuanTugasAkhir->status == 'ditolak')
+                                            @elseif ($pengajuanTugasAkhir && $pengajuanTugasAkhir->status == 'ditolak')
                                                 <span class="badge bg-danger">Ditolak</span>
                                             @else
                                                 <span class="badge bg-secondary">Belum Diajukan</span>
-
                                             @endif
                                         </h5>
                                     </div>

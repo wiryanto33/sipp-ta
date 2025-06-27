@@ -6,7 +6,8 @@ database:
   password: tamtama33
   host: localhost
   port: 3306
-  auto_migrate: true
+  auto_migrate: false
+  auto_seed: false
   create_user: true
 commands:
   - "php artisan config:cache"

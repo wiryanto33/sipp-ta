@@ -66,6 +66,7 @@ class PenilaianSidangController extends Controller implements HasMiddleware
     {
         // Cek apakah ada parameter jadwal_sidang
         $jadwalSidangId = $request->get('jadwal_sidang');
+        // dd($jadwalSidangId);
 
         if (!$jadwalSidangId) {
             return redirect()->route('jadwal-sidang.index')
@@ -370,60 +371,7 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         }
     }
 
-    /**
-     * Method untuk menampilkan rekapitulasi nilai sidang
-     */
-    // public function rekapitulasi(JadwalSidang $jadwalSidang)
-    // {
-    //     $jadwalSidang->load([
-    //         'tugasAkhir.mahasiswa.user',
-    //         'pengujiSidangs.dosen.user',
-    //         'penilaianSidangs.pengujiSidang.dosen.user'
-    //     ]);
-
-    //     // Hitung rata-rata nilai dari semua penguji
-    //     $totalNilai = $jadwalSidang->penilaianSidangs->sum('nilai_akhir');
-    //     $jumlahPenguji = $jadwalSidang->penilaianSidangs->count();
-    //     $rataRataNilai = $jumlahPenguji > 0 ? $totalNilai / $jumlahPenguji : 0;
-
-    //     // Tentukan grade berdasarkan rata-rata nilai
-    //     $grade = $this->hitungGrade($rataRataNilai);
-
-    //     return view('penilaian_sidang.rekapitulasi', compact(
-    //         'jadwalSidang',
-    //         'rataRataNilai',
-    //         'grade'
-    //     ));
-    // }
-
-    // /**
-    //  * Method helper untuk menghitung grade
-    //  */
-    // private function hitungGrade($nilai)
-    // {
-    //     if ($nilai >= 85) {
-    //         return 'A';
-    //     } elseif ($nilai >= 80) {
-    //         return 'A-';
-    //     } elseif ($nilai >= 75) {
-    //         return 'B+';
-    //     } elseif ($nilai >= 70) {
-    //         return 'B';
-    //     } elseif ($nilai >= 65) {
-    //         return 'B-';
-    //     } elseif ($nilai >= 60) {
-    //         return 'C+';
-    //     } elseif ($nilai >= 55) {
-    //         return 'C';
-    //     } elseif ($nilai >= 50) {
-    //         return 'D';
-    //     } else {
-    //         return 'E';
-    //     }
-    // }
-
-
-    //print pdf
+   
 
     public function printPDF(PenilaianSidang $penilaianSidang)
     {

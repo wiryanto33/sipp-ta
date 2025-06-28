@@ -5,6 +5,10 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -19,7 +23,11 @@
 
                             <a href="{{ route('penilaian-sidang.create', ['jadwal_sidang' => $jadwalSidang->id]) }}"
                                 class="btn btn-primary btn-sm"
-                                onclick="console.log('Klik Beri Penilaian - Status: {{ $jadwalSidang->status }}, ID: {{ $jadwalSidang->id }}')">
+                                onclick="
+                                    console.log('URL:', this.href);
+                                    console.log('Status:', '{{ $jadwalSidang->status }}');
+                                    console.log('User ID:', '{{ Auth::id() }}');
+                                ">
                                 <i class="fas fa-plus"></i> Beri Penilaian
                             </a>
 

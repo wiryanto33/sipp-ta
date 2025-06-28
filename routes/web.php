@@ -138,6 +138,7 @@ Route::middleware('auth')->group(function () {
         ->name('jadwal-sidang.download');
 
 
+    //route penilaian sidang
     Route::resource('penilaian-sidang', PenilaianSidangController::class);
 
     // Route khusus untuk print PDF

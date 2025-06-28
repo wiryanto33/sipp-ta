@@ -20,14 +20,11 @@
                                 </a>
                             @endcan
 
+                            {{-- <a href="{{ route('penilaian-sidang.create', $jadwalSidang->id) }}"><i class="fas fa-plus"></i>
+                                Beri Penilaian</a> --}}
 
-                            <a href="{{ route('penilaian-sidang.create', ['jadwal_sidang' => $jadwalSidang->id]) }}"
-                                class="btn btn-primary btn-sm"
-                                onclick="
-                                    console.log('URL:', this.href);
-                                    console.log('Status:', '{{ $jadwalSidang->status }}');
-                                    console.log('User ID:', '{{ Auth::id() }}');
-                                ">
+                            <a href="{{ route('penilaian-sidang.create', $jadwalSidang->id) }}"
+                                class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> Beri Penilaian
                             </a>
 

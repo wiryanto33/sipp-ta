@@ -139,7 +139,21 @@ Route::middleware('auth')->group(function () {
 
 
     //route penilaian sidang
-    Route::resource('penilaian-sidang', PenilaianSidangController::class);
+    // Route::resource('penilaian-sidang', PenilaianSidangController::class);
+    
+    Route::get('penilaian-sidang', [PenilaianSidangController::class, 'index'])
+        ->name('penilaian-sidang.index');
+    Route::get('penilaian-sidang/create/{jadwal_sidang}', [PenilaianSidangController::class, 'create'])
+        ->name('penilaian-sidang.create');
+    Route::post('penilaian-sidang/store', [PenilaianSidangController::class, 'store'])
+        ->name('penilaian-sidang.store');
+    Route::get('penilaian-sidang/{penilaianSidang}/edit', [PenilaianSidangController::class, 'edit'])
+        ->name('penilaian-sidang.edit');
+    Route::put('penilaian-sidang/{penilaianSidang}', [PenilaianSidangController::class, 'update'])
+        ->name('penilaian-sidang.update');
+    Route::delete('penilaian-sidang/{penilaianSidang}', [PenilaianSidangController::class, 'destroy'])
+        ->name('penilaian-sidang.destroy');
+
 
     // Route khusus untuk print PDF
     Route::get('penilaian-sidang/{penilaianSidang}/print', [PenilaianSidangController::class, 'printPDF'])

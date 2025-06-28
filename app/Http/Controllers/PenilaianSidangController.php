@@ -59,10 +59,8 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         return view('penilaian_sidang.index', compact('penilaianSidangs'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $jadwalSidangId = null)
     {
-        // Cek apakah ada parameter jadwal_sidang
-        $jadwalSidangId = $request->get('jadwal_sidang');
 
         if (!$jadwalSidangId) {
             return redirect()->route('jadwal-sidang.index')

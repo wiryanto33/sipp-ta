@@ -124,5 +124,35 @@ class RolePermissionSeeder extends Seeder
             'edit profile',
             'view profile',
         ]);
+
+        $kaprodiRole = Role::create(['name' => 'kaprodi']);
+        $kaprodiRole->givePermissionTo([
+            'view prodi',
+            'create prodi',
+            'edit prodi',
+            'delete prodi',
+            'view users',
+            'create users',
+            'edit users',
+            'delete users',
+            'show users',
+            'view tugas-akhir',
+            'create tugas-akhir',
+            'edit tugas-akhir',
+            'delete tugas-akhir',
+            'submit tugas-akhir',
+            'reject tugas-akhir',
+            'approve tugas-akhir',
+            'download tugas-akhir',
+            'view jadwal-sidang',
+            'create jadwal-sidang',
+            'edit jadwal-sidang',
+            'delete jadwal-sidang',
+            'show jadwal-sidang',
+            'view penilaian-sidang',
+            'edit penilaian-sidang',
+            'delete penilaian-sidang',
+            'show penilaian-sidang'
+        ]);
     }
 }

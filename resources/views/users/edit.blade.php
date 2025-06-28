@@ -10,14 +10,6 @@
                     <h3>Account Profile</h3>
                     <p class="text-subtitle text-muted">A page where users can change profile information</p>
                 </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Profile</li>
-                        </ol>
-                    </nav>
-                </div>
             </div>
         </div>
 
@@ -201,7 +193,7 @@
                                             </label>
                                             <input type="text" class="form-control" name="nrp"
                                                 value="{{ old('nrp', $user->nrp) }}"
-                                                placeholder="Nomor Registrasi Pokok">
+                                                placeholder="Nomor Registrasi Prajurit">
                                             @error('nrp')
                                                 <div class="invalid-feedback">
                                                     <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
@@ -482,9 +474,6 @@
 
                                 <!-- Action Buttons -->
                                 <div class="d-flex justify-content-end gap-2 pt-3 border-top">
-                                    <a href="{{ route('users.index') }}" class="btn btn-outline-secondary px-4">
-                                        <i class="fas fa-times me-2"></i>Batal
-                                    </a>
                                     <button type="submit" class="btn btn-primary px-4">
                                         <i class="fas fa-save me-2"></i>Simpan Perubahan
                                     </button>

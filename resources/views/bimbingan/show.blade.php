@@ -135,7 +135,7 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <div class="card">
-                                    <div class="card-header bg-warning">
+                                    <div class="card-header bg-warning text-white">
                                         <h5 class="card-title mb-0">Informasi Tugas Akhir</h5>
                                     </div>
                                     <div class="card-body">

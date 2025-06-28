@@ -5,10 +5,6 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">

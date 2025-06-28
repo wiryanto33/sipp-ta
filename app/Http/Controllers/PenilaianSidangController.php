@@ -59,14 +59,10 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         return view('penilaian_sidang.index', compact('penilaianSidangs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
         // Cek apakah ada parameter jadwal_sidang
         $jadwalSidangId = $request->get('jadwal_sidang');
-        // dd($jadwalSidangId);
 
         if (!$jadwalSidangId) {
             return redirect()->route('jadwal-sidang.index')
@@ -80,10 +76,14 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         ])->findOrFail($jadwalSidangId);
 
         // Cek apakah user adalah dosen penguji untuk sidang ini
-        $pengujiSidang = $jadwalSidang->pengujiSidangs
-            ->firstWhere('dosen.user_id', Auth::id());
-
-            // dd($pengujiSidang);
+        // PERBAIKAN: Gunakan cara manual untuk memastikan relasi ter-load
+        $pengujiSidang = null;
+        foreach ($jadwalSidang->pengujiSidangs as $ps) {
+            if ($ps->dosen && $ps->dosen->user_id == Auth::id()) {
+                $pengujiSidang = $ps;
+                break;
+            }
+        }
 
         if (!$pengujiSidang) {
             return redirect()->route('jadwal-sidang.show', $jadwalSidang)
@@ -371,7 +371,7 @@ class PenilaianSidangController extends Controller implements HasMiddleware
         }
     }
 
-   
+
 
     public function printPDF(PenilaianSidang $penilaianSidang)
     {

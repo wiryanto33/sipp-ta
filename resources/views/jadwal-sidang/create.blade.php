@@ -58,6 +58,7 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Fixed version of the jenis_sidang select options -->
                                     <div class="form-group mb-3">
                                         <label for="jenis_sidang" class="form-label">Jenis Sidang <span
                                                 class="text-danger">*</span></label>
@@ -71,6 +72,8 @@
                                             <option value="tugas_akhir"
                                                 {{ old('jenis_sidang') == 'tugas_akhir' ? 'selected' : '' }}>Tugas Akhir
                                             </option>
+                                            <option value="thesis" {{ old('jenis_sidang') == 'thesis' ? 'selected' : '' }}>
+                                                Thesis</option>
                                         </select>
                                         @error('jenis_sidang')
                                             <div class="invalid-feedback">{{ $message }}</div>

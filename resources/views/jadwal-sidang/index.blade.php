@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            
+
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
@@ -56,6 +56,8 @@
                                             Skripsi</option>
                                         <option value="tugas_akhir"
                                             {{ request('jenis') == 'tugas_akhir' ? 'selected' : '' }}>Tugas Akhir</option>
+                                        <option value="thesis" {{ request('jenis') == 'thesis' ? 'selected' : '' }}>
+                                            Thesis"></option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">

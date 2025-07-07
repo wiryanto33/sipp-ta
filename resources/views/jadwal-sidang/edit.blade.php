@@ -85,6 +85,9 @@
                                                     <option value="tugas_akhir"
                                                         {{ old('jenis_sidang', $jadwalSidang->jenis_sidang) === 'tugas_akhir' ? 'selected' : '' }}>
                                                         Tugas Akhir</option>
+                                                    <option value="thesis"
+                                                        {{ old('jenis_sidang', $jadwalSidang->jenis_sidang) === 'thesis' ? 'selected' : '' }}>
+                                                        Thesis</option>
                                                 </select>
                                                 @error('jenis_sidang')
                                                     <div class="invalid-feedback">{{ $message }}</div>

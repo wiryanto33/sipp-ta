@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jadwal_sidangs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pengajuan_tugas_akhir_id')->constrained()->onDelete('cascade');
-            $table->enum('jenis_sidang', ['proposal', 'skripsi', 'tugas akhir']);
+            $table->enum('jenis_sidang', ['proposal', 'skripsi', 'tugas_akhir', 'thesis']);
             $table->string('file_sidang');
             $table->dateTime('tanggal_sidang');
             $table->string('tempat_sidang');

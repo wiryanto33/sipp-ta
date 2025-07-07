@@ -91,11 +91,11 @@ class JadwalSidangController extends Controller implements HasMiddleware
     {
         $request->validate([
             'pengajuan_tugas_akhir_id' => 'required|exists:pengajuan_tugas_akhirs,id',
-            'jenis_sidang' => 'required|in:proposal,skripsi,tugas_akhir',
+            'jenis_sidang' => 'required|in:proposal,skripsi,tugas_akhir,thesis',
             'tanggal_sidang' => 'required|date|after:now|date_format:Y-m-d\TH:i',
             'tempat_sidang' => 'required|string|max:255',
             'ruang_sidang' => 'nullable|string|max:255',
-            'file_sidang' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'file_sidang' => 'nullable|file|mimes:pdf,doc,docx|max:5048',
             'catatan' => 'nullable|string',
             'penguji' => 'required|array|min:1',
             'penguji.*.dosen_id' => 'required|exists:dosens,id',
@@ -176,7 +176,7 @@ class JadwalSidangController extends Controller implements HasMiddleware
         $request->validate([
             // Fixed: Changed validation rule
             'pengajuan_tugas_akhir_id' => 'required|exists:pengajuan_tugas_akhirs,id',
-            'jenis_sidang' => 'required|in:proposal,skripsi,tugas_akhir',
+            'jenis_sidang' => 'required|in:proposal,skripsi,tugas_akhir,thesis',
             'tanggal_sidang' => 'required|date|after:now|date_format:Y-m-d\TH:i',
             'tempat_sidang' => 'required|string|max:255',
             'ruang_sidang' => 'nullable|string|max:255',

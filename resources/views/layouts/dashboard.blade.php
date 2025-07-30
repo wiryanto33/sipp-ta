@@ -32,6 +32,7 @@
         use App\Models\Bimbingan;
         use App\Models\PengujiSidang;
         use App\Models\PengajuanTugasAkhir;
+        use App\Models\User;
 
         $user = auth()->user();
 
@@ -39,6 +40,8 @@
         $totalBimbinganAktif = 0;
         $totalJadwalSidangBaru = 0;
         $totalPengajuanTugasAkhirBaru = 0;
+        $totalMahasiswaBaru = User:: where('status', 'nonaktif')->whereHas('mahasiswa')->count();
+        $totalDosenBaru = User::where('status', 'nonaktif')->whereHas('dosen')->count();
 
         // Logic untuk Kaprodi - melihat pengajuan tugas akhir baru di prodi nya
         if ($user->isKaprodi()) {
@@ -196,6 +199,10 @@
                                 <a href="{{ route('mahasiswas.index') }}" class='sidebar-link'>
                                     <i class="bi bi-people"></i>
                                     <span>Daftar Mahasiswa</span>
+
+                                    @if (Auth::user()->hasAnyRole(['admin', 'kaprodi']) && $totalMahasiswaBaru > 0)
+                                        <span class="badge bg-danger text-white ms-2">{{ $totalMahasiswaBaru }}</span>
+                                    @endif
                                 </a>
                             </li>
                         @endcan
@@ -205,6 +212,10 @@
                                 <a href="{{ route('dosens.index') }}" class='sidebar-link'>
                                     <i class="bi bi-person-badge"></i>
                                     <span>Daftar Dosen</span>
+
+                                    @if (Auth::user()->hasAnyRole(['admin', 'kaprodi']) && $totalDosenBaru > 0)
+                                        <span class="badge bg-danger text-white ms-2">{{ $totalDosenBaru }}</span>
+                                    @endif
                                 </a>
                             </li>
                         @endcan

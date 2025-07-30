@@ -196,8 +196,46 @@
                     <h1 class="auth-title">Log in.</h1>
                     <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
 
-                    <!-- Session Status -->
-                    <x-auth-session-status class="mb-4" :status="session('status')" />
+                    <!-- Error Message with Badge -->
+                    @if (session('error_message'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    @if (session('error_badge.icon'))
+                                        <i class="{{ session('error_badge.icon') }} me-2"></i>
+                                    @endif
+                                    {{ session('error_message') }}
+
+                                    @if (session('error_badge'))
+                                        <span class="badge {{ session('error_badge.class') }} ms-2">
+                                            @if (session('error_badge.icon'))
+                                                <i class="{{ session('error_badge.icon') }} me-1"></i>
+                                            @endif
+                                            {{ session('error_badge.text') }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+                    
+                    <!-- Registration Success Message (from previous example) -->
+                    @if (session('status'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            {{ session('status') }}
+
+                            @if (session('badge'))
+                                <span class="badge {{ session('badge.class') }} ms-2">
+                                    <i class="bi bi-hourglass-split me-1"></i>
+                                    {{ session('badge.text') }}
+                                </span>
+                            @endif
+
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

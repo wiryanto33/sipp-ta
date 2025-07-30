@@ -37,6 +37,14 @@ class JadwalSidangController extends Controller implements HasMiddleware
     {
         $query = JadwalSidang::with(['tugasAkhir.mahasiswa.user', 'pengujiSidangs.dosen']);
 
+        //hanya menampilkan jadwal sidang yang sudah di buat oleh user yang sedang login
+        if (Auth::user()->hasRole('mahasiswa')) {
+            $mahasiswaId = Auth::user()->mahasiswa->id;
+            $query->whereHas('tugasAkhir', function ($q) use ($mahasiswaId) {
+                $q->where('mahasiswa_id', $mahasiswaId);
+            });
+        }
+
         // Jika user adalah dosen, hanya tampilkan jadwal sidang dimana dia menjadi penguji
         if (Auth::user()->hasRole('dosen')) {
             $dosenId = Auth::user()->dosen->id;

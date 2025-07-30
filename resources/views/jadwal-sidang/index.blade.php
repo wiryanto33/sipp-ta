@@ -3,6 +3,20 @@
 @section('title', 'Jadwal Sidang')
 
 @section('content')
+
+
+    @php
+        $canCreateSchedule = true;
+
+        // Jika user adalah mahasiswa, cek apakah dia memiliki pengajuan tugas akhir yang diterima
+        if (auth()->user()->mahasiswa) {
+            $hasTugasAkhir = \App\Models\PengajuanTugasAkhir::where('mahasiswa_id', auth()->user()->mahasiswa->id)
+                ->where('status', 'diterima') // sesuaikan dengan status yang menandakan diterima
+                ->exists();
+            $canCreateSchedule = $hasTugasAkhir;
+        }
+    @endphp
+
     <div class="container-fluid">
         <div class="row">
 
@@ -14,19 +28,31 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title">Daftar Jadwal Sidang</h3>
-                        <div>
-                            <a href="{{ route('jadwal-sidang.calendar') }}" class="btn btn-outline-primary me-2">
+
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="{{ route('jadwal-sidang.calendar') }}" class="btn btn-outline-primary">
                                 <i class="fas fa-calendar"></i> Kalender
                             </a>
 
                             @can('create jadwal-sidang')
-                                <a href="{{ route('jadwal-sidang.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Tambah Jadwal
-                                </a>
+                                @if ($canCreateSchedule)
+                                    <a href="{{ route('jadwal-sidang.create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Tambah Jadwal
+                                    </a>
+                                @endif
                             @endcan
-
                         </div>
                     </div>
+
+                    @can('create jadwal-sidang')
+                        @if (!$canCreateSchedule)
+                            <div class="alert alert-warning m-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Anda belum memiliki pengajuan tugas akhir yang diterima. Silakan ajukan tugas akhir terlebih
+                                dahulu.
+                            </div>
+                        @endif
+                    @endcan
 
                     <div class="card-body">
                         <!-- Filter Form -->

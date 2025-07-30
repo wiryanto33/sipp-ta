@@ -7,6 +7,30 @@
         </a>
     </header>
 
+    {{-- Welcome Message with Badge --}}
+    @if (session('success_message'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    @if (session('success_badge.icon'))
+                        <i class="{{ session('success_badge.icon') }} me-2"></i>
+                    @endif
+                    {{ session('success_message') }}
+
+                    @if (session('success_badge'))
+                        <span class="badge {{ session('success_badge.class') }} ms-2">
+                            @if (session('success_badge.icon'))
+                                <i class="{{ session('success_badge.icon') }} me-1"></i>
+                            @endif
+                            {{ session('success_badge.text') }}
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     {{-- Modal Lengkapi Profil --}}
     @if (session('show_complete_profile_modal'))
         <div class="modal fade show d-block" tabindex="-1" role="dialog" id="completeProfileModal"
@@ -104,7 +128,8 @@
                                                             </div>
                                                             <div class="ms-2">
                                                                 <h6 class="mb-0">{{ $mahasiswa->user->name }}</h6>
-                                                                <small class="text-muted">{{ $mahasiswa->user->nrp }}</small>
+                                                                <small
+                                                                    class="text-muted">{{ $mahasiswa->user->nrp }}</small>
                                                             </div>
                                                         </div>
                                                     </td>

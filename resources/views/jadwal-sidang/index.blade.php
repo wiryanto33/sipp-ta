@@ -11,7 +11,7 @@
         // Jika user adalah mahasiswa, cek apakah dia memiliki pengajuan tugas akhir yang diterima
         if (auth()->user()->mahasiswa) {
             $hasTugasAkhir = \App\Models\PengajuanTugasAkhir::where('mahasiswa_id', auth()->user()->mahasiswa->id)
-                ->where('status', 'diterima') // sesuaikan dengan status yang menandakan diterima
+                ->where('status', ['diterima', 'siap_sidang']) // sesuaikan dengan status yang menandakan diterima
                 ->exists();
             $canCreateSchedule = $hasTugasAkhir;
         }

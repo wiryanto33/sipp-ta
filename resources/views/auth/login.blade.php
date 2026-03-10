@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - STTAL HRIS Dashboard</title>
+    <title>Login - STTAL Penilaian Tugas Akhir</title>
 
     <link rel="shortcut icon" href="{{ asset('mazer/dist/assets/compiled/svg/favicon.svg') }}" type="image/x-icon">
     <link rel="shortcut icon"
@@ -219,7 +219,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
-                    
+
                     <!-- Registration Success Message (from previous example) -->
                     @if (session('status'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -55,15 +55,13 @@ class DosenDashboardController extends Controller
         $perluReview = $pengajuanPendingReview + $pengajuanBimbingan;
 
         // Data untuk tabel Progress Mahasiswa Bimbingan
-        $mahasiswaProgress = Bimbingan::with(['pengajuanTugasAkhir.mahasiswa.user'])
+        $mahasiswaProgress = Bimbingan::with(['pengajuanTugasAkhir.mahasiswa.user', 'logBimbingans'])
             ->where('dosen_id', $dosen->id)
             ->where('status', Bimbingan::STATUS_AKTIF)
             ->get()
             ->map(function ($bimbingan) {
-                $totalLog = LogBimbingan::where('bimbingan_id', $bimbingan->id)->count();
-                $lastLog = LogBimbingan::where('bimbingan_id', $bimbingan->id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
+                $totalLog = $bimbingan->logBimbingans->count();
+                $lastLog = $bimbingan->logBimbingans->sortByDesc('created_at')->first();
 
                 // Hitung progress berdasarkan total log dan progress terakhir
                 $progress = 0;

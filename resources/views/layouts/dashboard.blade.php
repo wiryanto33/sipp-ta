@@ -40,7 +40,7 @@
         $totalBimbinganAktif = 0;
         $totalJadwalSidangBaru = 0;
         $totalPengajuanTugasAkhirBaru = 0;
-        $totalMahasiswaBaru = User:: where('status', 'nonaktif')->whereHas('mahasiswa')->count();
+        $totalMahasiswaBaru = User::where('status', 'nonaktif')->whereHas('mahasiswa')->count();
         $totalDosenBaru = User::where('status', 'nonaktif')->whereHas('dosen')->count();
 
         // Logic untuk Kaprodi - melihat pengajuan tugas akhir baru di prodi nya
@@ -156,23 +156,31 @@
                             </li>
                         @endif
 
-                        @can('view permissions')
-                            <li class="sidebar-item {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
-                                <a href="{{ route('permissions.index') }}" class='sidebar-link'>
-                                    <i class="bi bi-stack"></i>
-                                    <span>Permission</span>
+                        @canany(['view permissions', 'view roles'])
+                            <li
+                                class="sidebar-item has-sub
+        {{ request()->routeIs('permissions.*') || request()->routeIs('roles.*') ? ' active' : '' }}">
+                                <a href="#" class="sidebar-link">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <span>Manajemen Akses</span>
                                 </a>
-                            </li>
-                        @endcan
 
-                        @can('view roles')
-                            <li class="sidebar-item {{ request()->routeIs('roles.index') ? 'active' : '' }}">
-                                <a href="{{ route('roles.index') }}" class='sidebar-link'>
-                                    <i class="bi bi-stack"></i>
-                                    <span>Role</span>
-                                </a>
+                                <ul class="submenu">
+                                    @can('view permissions')
+                                        <li class="submenu-item {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
+                                            <a href="{{ route('permissions.index') }}">Permission</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('view roles')
+                                        <li class="submenu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                                            <a href="{{ route('roles.index') }}">Role</a>
+                                        </li>
+                                    @endcan
+                                </ul>
                             </li>
-                        @endcan
+                        @endcanany
+
 
                         @can('view prodi')
                             <li class="sidebar-item {{ request()->routeIs('prodis.index') ? 'active' : '' }}">
@@ -236,7 +244,7 @@
                                 <a href="{{ route('pengajuan-tugas-akhir.index') }}" class='sidebar-link'>
                                     <div>
                                         <i class="bi bi-stack"></i>
-                                        <span>Pengajuan Tugas Akhir</span>
+                                        <span>Pengajuan TA</span>
                                     </div>
                                     @if ($totalPengajuanTugasAkhirBaru > 0)
                                         <span

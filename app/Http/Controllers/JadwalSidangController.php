@@ -82,8 +82,8 @@ class JadwalSidangController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $tugasAkhirs = PengajuanTugasAkhir::with('mahasiswa')->get();
-        $dosens = Dosen::all();
+        $tugasAkhirs = PengajuanTugasAkhir::with('mahasiswa.user')->get();
+        $dosens = Dosen::with('user')->get();
 
         // Cari tugas akhir milik mahasiswa yang sedang login
         $defaultTugasAkhirId = null;
@@ -167,8 +167,8 @@ class JadwalSidangController extends Controller implements HasMiddleware
         //         ->with('error', 'Jadwal sidang tidak dapat diedit');
         // }
 
-        $tugasAkhirs = PengajuanTugasAkhir::with('mahasiswa')->get();
-        $dosens = Dosen::all();
+        $tugasAkhirs = PengajuanTugasAkhir::with('mahasiswa.user')->get();
+        $dosens = Dosen::with('user')->get();
         $jadwalSidang->load('pengujiSidangs');
 
         return view('jadwal-sidang.edit', compact('jadwalSidang', 'tugasAkhirs', 'dosens'));
@@ -295,7 +295,7 @@ class JadwalSidangController extends Controller implements HasMiddleware
 
     public function calendar()
     {
-        $jadwalSidangs = JadwalSidang::with(['tugasAkhir.mahasiswa', 'pengujiSidangs'])
+        $jadwalSidangs = JadwalSidang::with(['tugasAkhir.mahasiswa.user', 'pengujiSidangs'])
             ->upcoming()
             ->orderBy('tanggal_sidang')
             ->get();

@@ -33,7 +33,7 @@ class MahasiswaDashboardController extends Controller
         $logBimbinganTerbaru = collect();
 
         if ($pengajuanTugasAkhir) {
-            $bimbingan = Bimbingan::where('pengajuan_tugas_akhir_id', $pengajuanTugasAkhir->id)->first();
+            $bimbingan = Bimbingan::with('dosen.user')->where('pengajuan_tugas_akhir_id', $pengajuanTugasAkhir->id)->first();
 
             if ($bimbingan) {
                 $totalLogBimbingan = LogBimbingan::where('bimbingan_id', $bimbingan->id)->count();

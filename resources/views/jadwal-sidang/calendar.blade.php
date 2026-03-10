@@ -49,7 +49,7 @@
                     events: [
                         @foreach ($jadwalSidangs as $jadwal)
                             @php
-                                $mahasiswaNama = optional($jadwal->tugasAkhir->mahasiswa)->name ?? 'Mahasiswa Tidak Diketahui';
+                                $mahasiswaNama = $jadwal->tugasAkhir->mahasiswa->user->name ?? 'Mahasiswa Tidak Diketahui';
                                 $color = match ($jadwal->jenis_sidang) {
                                     'proposal' => '#17a2b8',
                                     'skripsi' => '#28a745',

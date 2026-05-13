@@ -282,7 +282,7 @@
                     <div class="logo-container">
                         <img src="{{ asset('mazer/dist/assets/compiled/png/logo-sttal-kecil.png') }}" alt="STTAL Logo">
                         <h3 class="logo-title">STTAL</h3>
-                        <p class="logo-subtitle">Sistem Informasi Pengajuan dan Penilaian Tugas Akhir</p>
+                        <p class="logo-subtitle">Sistem Informasi Proses Tugas Akhir</p>
                     </div>
                 </div>
             </div>

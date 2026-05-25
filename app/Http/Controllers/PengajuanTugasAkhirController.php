@@ -222,16 +222,44 @@ class PengajuanTugasAkhirController extends Controller implements HasMiddleware
         }
     }
 
+    /**
+     * Mendapatkan daftar status yang diizinkan berdasarkan role user.
+     * Kaprodi hanya dapat mengubah status: draft, diajukan, diterima, ditolak, lulus, tidak_lulus.
+     * Admin dapat mengubah ke semua status.
+     */
+    private function getAllowedStatusForUser(): array
+    {
+        $user = Auth::user();
+
+        if ($user->isKaprodi()) {
+            return [
+                PengajuanTugasAkhir::STATUS_DRAFT,
+                PengajuanTugasAkhir::STATUS_DIAJUKAN,
+                PengajuanTugasAkhir::STATUS_DITERIMA,
+                PengajuanTugasAkhir::STATUS_DITOLAK,
+                PengajuanTugasAkhir::STATUS_LULUS,
+                PengajuanTugasAkhir::STATUS_TIDAK_LULUS,
+            ];
+        }
+
+        // Admin dapat mengubah ke semua status
+        return array_keys(PengajuanTugasAkhir::getStatusOptions());
+    }
+
     public function updateStatus(Request $request, PengajuanTugasAkhir $pengajuan)
     {
-        // Hanya admin/koordinator yang bisa update status
+        // Hanya admin/kaprodi yang bisa update status
         if (!Auth::user()->isAdmin() && !Auth::user()->isKaprodi()) {
             abort(403);
         }
 
+        $allowedStatuses = $this->getAllowedStatusForUser();
+
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:' . implode(',', array_keys(PengajuanTugasAkhir::getStatusOptions())),
+            'status' => 'required|in:' . implode(',', $allowedStatuses),
             'message' => 'nullable|string|max:500',
+        ], [
+            'status.in' => 'Status yang dipilih tidak diizinkan untuk role Anda.',
         ]);
 
         if ($validator->fails()) {

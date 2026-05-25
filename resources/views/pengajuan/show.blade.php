@@ -208,13 +208,39 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Update Status:</label>
                                     <select class="form-select" name="status" id="status" required>
-                                        @foreach (\App\Models\PengajuanTugasAkhir::getStatusOptions() as $key => $label)
+                                        @php
+                                            $allStatuses = \App\Models\PengajuanTugasAkhir::getStatusOptions();
+
+                                            // Kaprodi hanya boleh memilih status berikut
+                                            $kaprodiAllowedStatuses = [
+                                                \App\Models\PengajuanTugasAkhir::STATUS_DRAFT,
+                                                \App\Models\PengajuanTugasAkhir::STATUS_DIAJUKAN,
+                                                \App\Models\PengajuanTugasAkhir::STATUS_DITERIMA,
+                                                \App\Models\PengajuanTugasAkhir::STATUS_DITOLAK,
+                                                \App\Models\PengajuanTugasAkhir::STATUS_LULUS,
+                                                \App\Models\PengajuanTugasAkhir::STATUS_TIDAK_LULUS,
+                                            ];
+
+                                            // Tentukan daftar status yang ditampilkan berdasarkan role
+                                            $statusOptions = auth()->user()->isAdmin()
+                                                ? $allStatuses
+                                                : array_intersect_key($allStatuses, array_flip($kaprodiAllowedStatuses));
+                                        @endphp
+
+                                        @foreach ($statusOptions as $key => $label)
                                             <option value="{{ $key }}"
                                                 {{ $pengajuan->status == $key ? 'selected' : '' }}>
                                                 {{ $label }}
                                             </option>
                                         @endforeach
                                     </select>
+
+                                    @if (auth()->user()->isKaprodi())
+                                        <div class="form-text text-muted">
+                                            <i class="fas fa-info-circle"></i>
+                                            Kaprodi hanya dapat mengubah status: Draft, Diajukan, Diterima, Ditolak, Lulus, dan Tidak Lulus.
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="mb-3">
